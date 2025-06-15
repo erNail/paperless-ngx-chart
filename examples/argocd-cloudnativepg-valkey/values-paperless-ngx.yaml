@@ -1,0 +1,88 @@
+---
+resources:
+  limits:
+    cpu: "256m"
+    memory: "256Mi"
+    ephemeral-storage: "256Mi"
+  requests:
+    cpu: "256m"
+    memory: "256Mi"
+    ephemeral-storage: "256Mi"
+
+persistence:
+  data:
+    enabled: true
+    size: "32Gi"
+    storageClass: "synology-iscsi-delete"
+  media:
+    enabled: true
+    size: "16Gi"
+    storageClass: "synology-iscsi-delete"
+  export:
+    enabled: true
+    size: "16Gi"
+    storageClass: "synology-iscsi-delete"
+  consume:
+    enabled: true
+    size: "16Gi"
+    storageClass: "nfs-subdir-delete"
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "dns01-cloudflare-cluster-issuer-prod"
+  hosts:
+    - host: "paperless.nailforge.dev"
+      paths:
+        - path: "/"
+          pathType: "Prefix"
+          servicePortName: "http"
+  tls:
+    - hosts:
+        - "paperless.nailforge.dev"
+      secretName: "paperless-ngx-tls"
+
+app:
+  env:
+    - name: "PAPERLESS_REDIS"
+      secretKeyRef:
+        name: "paperless-ngx-valkey-credentials"
+        key: "url"
+    - name: "PAPERLESS_DBENGINE"
+      value: "postgresql"
+    - name: "PAPERLESS_DBHOST"
+      value: "postgresql-paperless-ngx-rw"
+    - name: "PAPERLESS_DBPORT"
+      value: "5432"
+    - name: "PAPERLESS_DBNAME"
+      value: "paperless"
+    - name: "PAPERLESS_DBUSER"
+      secretKeyRef:
+        name: "paperless-ngx-db-credentials"
+        key: "username"
+    - name: "PAPERLESS_DBPASS"
+      secretKeyRef:
+        name: "paperless-ngx-db-credentials"
+        key: "password"
+    - name: "PAPERLESS_URL"
+      value: "https://paperless-ngx.nailforge.dev"
+    - name: "PAPERLESS_ADMIN_USER"
+      secretKeyRef:
+        name: "paperless-ngx-admin-credentials"
+        key: "username"
+    - name: "PAPERLESS_ADMIN_PASSWORD"
+      secretKeyRef:
+        name: "paperless-ngx-admin-credentials"
+        key: "password"
+    - name: "PAPERLESS_OCR_LANGUAGE"
+      value: "deu+eng"
+    - name: "PAPERLESS_ENABLE_FLOWER"
+      value: "true"
+...

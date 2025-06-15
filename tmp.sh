@@ -1,0 +1,2 @@
+kubeseal -f ./examples/argocd-cloudnativepg-valkey/secret-paperless-ngx-db-credentials.yaml -w ./examples/argocd-cloudnativepg-valkey/sealed-secret-paperless-ngx-db-credentials.yaml  --controller-name sealed-secrets
+kubeseal -f ./examples/argocd-cloudnativepg-valkey/secret-paperless-ngx-admin-credentials.yaml -w ./examples/argocd-cloudnativepg-valkey/sealed-secret-paperless-ngx-admin-credentials.yaml  --controller-name sealed-secrets

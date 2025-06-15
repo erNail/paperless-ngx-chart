@@ -1,0 +1,23 @@
+---
+apiVersion: "v2"
+name: "paperless-ngx"
+description: "A lightweight Helm chart for paperless-ngx that prioritizes transparency and flexibility"
+type: "application"
+icon: "https://avatars.githubusercontent.com/u/67865462"
+keywords:
+  - "document-management"
+  - "dms"
+  - "paperless"
+maintainers:
+  - name: "ernail"
+    email: "nagel.eric.95@googlemail.com"
+annotations:
+  artifacthub.io/license: "MIT"
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/erNail/paperless-ngx
+    - name: support
+      url: https://github.com/erNail/paperless-ngx
+version: "0.0.0"
+appVersion: "2.16.3"
+...

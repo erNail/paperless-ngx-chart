@@ -1,0 +1,39 @@
+---
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: "paperless-ngx"
+  namespace: "argocd"
+spec:
+  project: "default"
+  sources:
+    - repoURL: "https://github.com/erNail/paperless-ngx-chart"
+      # TODO: Use main
+      targetRevision: "feat/add-chart"
+      path: "examples/argocd-cloudnativepg-valkey"
+      ref: "values"
+    - repoURL: "https://github.com/erNail/paperless-ngx-chart"
+      # TODO: Use main
+      targetRevision: "feat/add-chart"
+      path: "chart"
+      helm:
+        releaseName: "paperless-ngx"
+        valueFiles:
+          - "$values/examples/argocd-cloudnativepg-valkey/values-paperless-ngx.yaml"
+    - repoURL: "registry-1.docker.io/bitnamicharts"
+      chart: "valkey"
+      targetRevision: "3.0.13"
+      helm:
+        releaseName: "paperless-ngx-valkey"
+        valueFiles:
+          - "$values/examples/argocd-cloudnativepg-valkey/values-valkey.yaml"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "paperless-ngx"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - "CreateNamespace=true"
+...

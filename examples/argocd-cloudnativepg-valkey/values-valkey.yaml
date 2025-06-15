@@ -1,0 +1,22 @@
+---
+global:
+  defaultStorageClass: "nfs-subdir-retain"
+
+auth:
+  existingSecret: "paperless-ngx-valkey-credentials"
+  existingSecretPasswordKey: "password"
+
+primary:
+  persistence:
+    size: "32Gi"
+
+replica:
+  replicaCount: 2
+  persistence:
+    size: "32Gi"
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+...
